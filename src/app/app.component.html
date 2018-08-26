@@ -1,20 +1,122 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div id="myHeaderBar">
 
+  <!--エリア選択ボタン-->
+  <button
+    (click)="isCollapsed = !isCollapsed"
+    id="areaButton"
+    class="btn btn-default">
+    エリア選択
+  </button>
+
+  <!--ABRDADロゴ-->
+  <a href="http://webservice.recruit.co.jp">
+    <img
+      src="http://webservice.recruit.co.jp/banner/abroad-m.gif"
+      alt="エイビーロードWebサービス"
+      width="88"
+      height="35"
+      border="0"
+      title="エイビーロードWebサービス"
+      class="abloadCredit">
+  </a>
+  <!--ヘッダータイトル-->
+  <span
+    class="myTitle"
+    *ngIf="!isMobile">
+    人気の海外旅行
+  </span>
+
+</div>
+
+<!--エリア選択メニュー-->
+<div [collapse]="isCollapsed">
+  <table
+    (click)="isCollapsed = !isCollapsed"
+    class="table table-bordered"
+    id="mySelectTable">
+    <tbody class="myTableHover">
+    <tr *ngFor="let area of areas; let i = index">
+      <td (click)="onAreaChange(i)">
+        {{area.name}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--旅行一覧-->
+<div>
+
+  <!--PC用 isMobileがfalseの時-->
+  <table
+    class="table table-bordered"
+    *ngIf="!isMobile">
+    <tr
+      *ngFor="let data of selectedData; let i = index">
+      <td class="td_id">{{i+1}}<br>
+        <span
+          class="glyphicon glyphicon-bookmark"
+          (click)="onBookmarkClick(data.id, i)"
+          [class.marked]="isMarked(data.id)">
+        </span>
+      </td>
+      <td class="td_country">
+        {{data.dest?.country?.name}}
+      </td>
+      <td class="td_photo">
+        <img
+          [src]="data.img[0]?.s"
+          *ngIf="data.img[0]">
+      </td>
+      <td class="td_price">
+        <span class="priceFont">
+          {{data.price?.min | number }}
+        </span>円～
+      </td>
+      <td class="td_description">
+        {{data.title}}
+      </td>
+      <td class="td_link">
+        <button
+          (click)="onDetailClick(i)"
+          class="btn btn-sm btn-primary">
+          詳細
+        </button>
+      </td>
+    </tr>
+  </table>
+
+  <!-- モバイル用 -->
+  <table
+    class="table table-bordered"
+    *ngIf="isMobile">
+    <tr *ngFor="let data of selectedData; let i = index">
+      <td class="td_photo_mobile">
+        <img
+          [src]="data?.img[0]?.s" class="mobileImg">
+      </td>
+      <td class="mobileText">
+        #{{i+1}}
+        <span
+          class="glyphicon glyphicon-bookmark"
+          (click)="onBookmarkClick(data.id, i)"
+          [class.marked]="isMarked(data.id)">
+        </span>
+        {{data.dest?.country?.name}}
+        <span class="priceFont">
+          {{data.price.min | number }}</span>円〜
+        <br>
+        {{data.title}}
+        <button
+          (click)="onDetailClick(i)"
+          class="btn btn-sm btn-primary">
+          詳細
+        </button>
+      </td>
+
+    </tr>
+  </table>
+
+  <detail-dialog [tourData]="tourObj" #detailDialog>
+  </detail-dialog>
+</div>
