@@ -11,7 +11,7 @@ export interface TourData {
 @Injectable()
 export class HttpService {
   WEB_API_URL: string = "http://webservice.recruit.co.jp/ab-road/tour/v1/";
-  API_KEY: string = "<API Key>";
+  API_KEY: string = "6efae8157a5234ab";
   DEFAULT_SIZE: string = "30";
   SORT_RANKING: string = "5";
   CALLBACK: string = "JSONP_CALLBACK";

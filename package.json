@@ -25,6 +25,7 @@
     "intl": "^1.2.5",
     "ngx-bootstrap": "^2.0.0-beta.8",
     "rxjs": "^6.2.2",
+    "rxjs-compat": "^6.2.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
